@@ -1,0 +1,32 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.env
+credentials.json
+token.json
+logs/
+storage/
+*.pyc
+# Environment variables and secrets
+.env.*
+!.env.example
+
+# Python test and coverage artifacts
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Logs and local databases
+*.log
+*.sqlite3
+*.db
+
+# Local email samples and private data
+private_data/
+uploads/
+
+# IDE and operating system files
+.idea/
+.DS_Store
+Thumbs.db

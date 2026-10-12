@@ -1,0 +1,18 @@
+Email Threat Analyzer frontend update
+
+Changes:
+- The Dashboard tab now explains the tool's purpose, core capabilities, workflow, and quick actions instead of displaying an IP reputation dashboard.
+- The IP Reputation Dashboard now appears inside the Analyze tab only after an analysis result is rendered.
+- IP counts, risk counts, score bars, Received hops, and insights are calculated from the currently displayed email's analysis result only. It no longer aggregates IPs across browser history.
+- Restoring an item from History opens that specific analysis in Analyze and renders its IP dashboard for that email.
+- The analysis IP panel is hidden when starting a new upload or header analysis and reappears after results are rendered.
+
+Install:
+1. Back up the current active frontend folder.
+2. Replace index.html, style.css, and app.js with these files.
+3. Hard refresh the browser (Ctrl+Shift+R).
+
+Notes:
+- No backend routes or API credentials are changed.
+- Reputation values are shown only if present in the analysis response. Unknown or missing data is not treated as safe.
+- This package was syntax-checked, but should still be tested against the user's local backend and actual response shape.

@@ -1,0 +1,16 @@
+fastapi
+uvicorn[standard]
+python-multipart
+python-dotenv
+httpx
+beautifulsoup4
+dnspython
+dkimpy
+tldextract
+pypdf
+oletools
+yara-python
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
+pytest

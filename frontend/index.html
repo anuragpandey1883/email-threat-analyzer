@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Email Threat Analyzer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Email Threat Analyzer</h1>
+      <p>Threat analysis of suspicious .eml emails</p>
+    </div>
+    <span class="status" id="apiStatus">API: checking...</span>
+  </header>
+
+  <nav class="tabbar" aria-label="Main navigation">
+    <button class="tab-button active" data-tab="dashboard">Dashboard</button>
+    <button class="tab-button" data-tab="analyze">Analyze</button>
+    <button class="tab-button" data-tab="history">History</button>
+    <button class="tab-button" data-tab="reports">Reports</button>
+    <button class="tab-button" data-tab="virustotal">VirusTotal</button>
+    <button class="tab-button" data-tab="about">About Us</button>
+    <button class="tab-button" data-tab="contact">Contact Us</button>
+  </nav>
+  <main class="container">
+    <section class="tab-page" id="tab-dashboard">
+      <section class="dashboard-heading">
+        <div><p class="eyebrow">EMAIL SECURITY WORKSPACE</p><h2>Email Threat Analyzer</h2><p class="muted">Inspect suspicious emails, verify sender authentication, review URLs and attachments, and understand recorded mail routes with threat-intelligence context.</p></div>
+        <button class="primary" data-go-tab="analyze">＋ Analyze Email</button>
+      </section>
+      <section class="soc-status-strip" aria-label="System status">
+        <span><i class="status-pulse"></i> LOCAL ANALYSIS WORKSPACE</span>
+        <span id="dashboardCoverage">No analysis data yet</span>
+        <span>DATA SCOPE: THIS BROWSER</span>
+      </section>
+      <section class="dashboard-metrics" aria-label="Threat overview">
+        <article class="dashboard-stat card metric-total"><span><i class="metric-glyph">Σ</i> Emails Analyzed</span><strong id="dashboardTotal">0</strong><small>Saved locally in this browser</small><div class="metric-foot"><span>Analysis records</span><b id="dashboardRecentCount">0 recent</b></div></article>
+        <article class="dashboard-stat card metric-danger"><span><i class="metric-glyph">!</i> High / Critical Risk</span><strong id="dashboardHigh">0</strong><small>Requires analyst review</small><div class="metric-foot"><span>Share of history</span><b id="dashboardHighRate">0%</b></div></article>
+        <article class="dashboard-stat card metric-medium"><span><i class="metric-glyph">◇</i> Findings Detected</span><strong id="dashboardFindings">0</strong><small>Across saved analyses</small><div class="metric-foot"><span>Per analysis average</span><b id="dashboardAvgFindings">0.0</b></div></article>
+        <article class="dashboard-stat card metric-latest"><span><i class="metric-glyph">◷</i> Latest Analysis</span><strong id="dashboardLatest">—</strong><small id="dashboardLatestMeta">No analyses saved yet</small><div class="metric-foot"><span>Most recent record</span><b id="dashboardLatestRisk">—</b></div></article>
+      </section>
+      <section class="soc-dashboard-grid">
+        <article class="card soc-panel soc-chart-panel"><div class="section-title"><div><p class="eyebrow">RISK DISTRIBUTION</p><h2>Analysis verdicts</h2><p class="muted">Verdicts from saved browser history, not all inbox traffic.</p></div><span class="live-tag">LOCAL DATA</span></div><div id="dashboardRiskChart" class="risk-chart-area"><p class="empty-state">Analyze an email to populate the risk distribution.</p></div></article>
+        <article class="card soc-panel"><div class="section-title"><div><p class="eyebrow">RECENT ACTIVITY</p><h2>Latest investigations</h2><p class="muted">Most recent saved analysis records.</p></div><button class="text-button" data-go-tab="history">View history →</button></div><div id="dashboardRecent" class="dashboard-recent-list"><p class="empty-state">No saved analyses yet.</p></div></article>
+      </section>
+      <section class="soc-dashboard-grid soc-lower-grid">
+        <article class="card soc-panel"><div class="section-title"><div><p class="eyebrow">SIGNAL OVERVIEW</p><h2>Most common finding categories</h2><p class="muted">Counts derived from saved analysis findings.</p></div></div><div id="dashboardFindingChart" class="finding-chart"><p class="empty-state">Finding statistics will appear after analysis.</p></div></article>
+        <article class="card soc-panel"><div class="section-title"><div><p class="eyebrow">WORKFLOW</p><h2>Investigation checklist</h2></div></div><ol class="soc-checklist"><li><span>01</span><div><b>Collect evidence</b><small>Upload .eml, paste headers, or use read-only Gmail.</small></div></li><li><span>02</span><div><b>Validate signals</b><small>Review authentication, URLs, attachments, and mail route.</small></div></li><li><span>03</span><div><b>Record disposition</b><small>Review evidence before treating a verdict as conclusive.</small></div></li><li><span>04</span><div><b>Export report</b><small>Save the analysis for further investigation.</small></div></li></ol></article>
+      </section>
+      <div class="dashboard-columns">
+        <div class="dashboard-main-col">
+          <section class="card dashboard-panel"><div class="section-title"><div><h2>What this tool checks</h2><p class="muted">One workflow for reviewing suspicious email indicators.</p></div></div>
+            <div class="tool-feature-grid">
+              <article class="tool-feature"><h3>Sender & Authentication</h3><p>Review sender fields and available SPF, DKIM, and DMARC results.</p></article>
+              <article class="tool-feature"><h3>URLs & Attachments</h3><p>Inspect extracted links, file fingerprints, and available reputation results.</p></article>
+              <article class="tool-feature"><h3>Received Mail Route</h3><p>Examine recorded mail hops and IP reputation signals in the analyzed message.</p></article>
+              <article class="tool-feature"><h3>Evidence-based Findings</h3><p>Bring available indicators together to support a human review, not an automatic guarantee.</p></article>
+            </div>
+          </section>
+          <section class="card dashboard-panel"><div class="section-title"><h2>How to use it</h2></div><ol class="workflow-list"><li><b>Provide an email</b><span>Upload an .eml file, paste headers, or select a Gmail message.</span></li><li><b>Run analysis</b><span>The backend checks supported email indicators and configured reputation providers.</span></li><li><b>Review evidence</b><span>Read the verdict, findings, URLs, attachments, and the analyzed email's Received chain.</span></li><li><b>Export if needed</b><span>Download the report or JSON for further investigation.</span></li></ol></section>
+        </div>
+        <aside class="dashboard-side-col">
+          <section class="card dashboard-panel"><div class="section-title"><h2>Capabilities</h2></div><ul class="insight-list"><li><i class="dot low"></i><span>.eml and raw-header analysis</span></li><li><i class="dot low"></i><span>Read-only Gmail analysis</span></li><li><i class="dot low"></i><span>URL and attachment reputation checks</span></li><li><i class="dot low"></i><span>Received-chain IP enrichment where available</span></li><li><i class="dot unknown"></i><span>Missing reputation data is marked unknown, not safe</span></li></ul></section>
+          <section class="card dashboard-panel"><div class="section-title"><h2>Quick Actions</h2></div><button class="action-row" data-go-tab="analyze">Analyze an email <span>→</span></button><button class="action-row" data-go-tab="history">Open history <span>→</span></button><button class="action-row" data-go-tab="reports">View reports <span>→</span></button></section>
+        </aside>
+      </div>
+      <section class="card dashboard-disclaimer">ⓘ This tool assists investigation; reputation results can be incomplete or outdated and should be considered alongside other evidence.</section>
+    </section>
+    <section class="tab-page hidden" id="tab-analyze">
+    <section class="hero card">
+      <div>
+        <h2>Analyze an email before you trust it</h2>
+        <p>Upload an <strong>.eml</strong> file to inspect sender authentication, mail routing, URLs, and attachments.</p>
+      </div>
+      <section class="gmail-panel">
+        <h3>Analyze from Gmail (read-only)</h3>
+        <p class="muted">Connect your Google account, load recent messages, then analyze a selected email. The app requests read-only Gmail access.</p>
+        <div class="gmail-actions">
+          <button class="primary secondary" id="gmailConnectBtn">Connect Gmail</button>
+          <button class="primary secondary" id="gmailLoadBtn" disabled>Load inbox</button>
+          <button class="primary secondary" id="gmailDisconnectBtn" disabled>Disconnect</button>
+        </div>
+        <p id="gmailStatus" class="muted">Gmail: not connected</p>
+        <label for="gmailMessageSelect" class="muted">Recent messages</label>
+        <select id="gmailMessageSelect" disabled>
+          <option value="">Connect and load messages first</option>
+        </select>
+        <button class="primary" id="gmailAnalyzeBtn" disabled>Analyze selected Gmail message</button>
+      </section>
+      <div class="divider-label"><span>OR paste raw email headers</span></div>
+      <label for="headerInput">Paste complete email headers (including Received, Authentication-Results, From, To, Subject, Date)</label>
+      <textarea id="headerInput" rows="9" placeholder="From: sender@example.com&#10;To: recipient@example.com&#10;Subject: Example&#10;Received: ...&#10;Authentication-Results: ..."></textarea>
+      <button class="primary secondary" id="analyzeHeadersBtn">Analyze Headers</button>
+      <p class="error" id="headerError"></p>
+      <div class="divider-label"><span>OR upload an .eml file</span></div>
+      <label class="dropzone" id="dropzone">
+        <input type="file" id="fileInput" accept=".eml,message/rfc822">
+        <span class="drop-title">Drop .eml here</span>
+        <span class="drop-subtitle">or click to browse</span>
+        <span class="file-name" id="fileName">No file selected</span>
+      </label>
+      <button class="primary" id="analyzeBtn">Analyze Email</button>
+      <section id="analysisProgress" class="progress-panel card hidden" aria-live="polite" aria-atomic="true">
+        <div class="section-title"><h3 id="progressTitle">Analyzing email</h3><span id="progressPercent" class="muted">In progress</span></div>
+        <div class="progress-track"><span id="progressBar"></span></div>
+        <p id="progressMessage" class="muted">Checking email indicators and configured reputation services…</p>
+      </section>
+      <p class="error" id="error"></p>
+      <p class="error" id="gmailError"></p>
+    </section>
+
+    <section class="result-export-toolbar hidden" id="resultExportToolbar" aria-label="Export analyzed email">
+      <label for="exportFormat">Export analyzed email</label>
+      <select id="exportFormat" aria-label="Choose export format">
+        <option value="eml">Original email (.eml)</option>
+        <option value="html" selected>HTML security report</option>
+        <option value="json">Complete analysis (JSON)</option>
+      </select>
+      <button class="primary" id="exportSelectedBtn" type="button">Export</button>
+      <span class="muted" id="exportAvailabilityNote"></span>
+    </section>
+    <div class="hidden" aria-hidden="true">
+      <button id="downloadEmlBtn" disabled>Download original .eml</button>
+      <button id="downloadHtmlBtn" disabled>Download HTML report</button>
+      <button id="downloadJsonBtn" disabled>Download JSON</button>
+    </div>
+
+    <section class="summary card hidden findings-summary" id="summary" aria-live="polite">
+      <div class="findings-summary-heading">
+        <div><p class="eyebrow">CURRENT EMAIL</p><h3>Email Security Summary</h3><p class="muted">A quick explanation of the results returned by the analyzer.</p></div>
+        <span id="riskLevel" class="plain-risk-badge risk-unknown">Inconclusive</span>
+      </div>
+      <div class="findings-summary-grid">
+        <article class="finding-summary-card"><span class="summary-icon" aria-hidden="true">✓</span><div><h4 id="summaryVerdictTitle">Overall verdict</h4><p id="summaryVerdictText">Run an analysis to see the result.</p></div></article>
+        <article class="finding-summary-card"><span class="summary-icon" aria-hidden="true">↗</span><div><h4>URLs and attachments</h4><p id="summaryLinksText">Link and file findings will appear here.</p></div></article>
+        <article class="finding-summary-card"><span class="summary-icon" aria-hidden="true">✉</span><div><h4>Sender and authentication</h4><p id="summarySenderText">Sender and authentication results will appear here.</p></div></article>
+        <article class="finding-summary-card"><span class="summary-icon" aria-hidden="true">→</span><div><h4>Recommended next step</h4><p id="summaryActionText">Review the evidence before trusting the message.</p></div></article>
+      </div>
+      <details class="summary-score-details"><summary>Show technical risk details</summary><div class="summary-technical-grid"><p><span>Risk score</span><strong id="riskScore">—</strong></p><p><span>Confidence</span><strong id="confidence">—</strong></p><p><span>Assessment note</span><strong id="assessment">—</strong></p></div></details>
+      <p class="muted summary-caveat">A low-risk result does not guarantee safety. Checks that did not return data are unknown, not clean.</p>
+    </section>
+
+    <section class="card plain-language-panel hidden" id="plainLanguagePanel" aria-live="polite">
+      <div class="section-title"><div><p class="eyebrow">PLAIN-LANGUAGE SUMMARY</p><h3>What this result means</h3></div><span id="plainRiskBadge" class="plain-risk-badge">Unknown</span></div>
+      <p id="plainSummary">Run an analysis to see a plain-language explanation.</p>
+      <div class="plain-language-columns"><div><h4>Why it received this result</h4><ul id="plainReasons"></ul></div><div><h4>What you should do next</h4><ul id="plainActions"></ul></div></div>
+      <p class="muted plain-caveat">This is a triage aid, not proof that an email is safe or malicious. Missing provider data is unknown—not a clean result.</p>
+    </section>
+
+    <section class="grid hidden" id="details">
+      <article class="card">
+        <div class="section-title"><h3>Sender</h3></div>
+        <div class="kv" id="senderInfo"></div>
+      </article>
+
+      <article class="card">
+        <div class="section-title"><h3>Authentication</h3></div>
+        <div class="kv" id="authInfo"></div>
+      </article>
+
+      <article class="card wide">
+        <div class="section-title"><h3>Findings</h3></div>
+        <div id="findings"></div>
+      </article>
+
+      <article class="card wide">
+        <div class="section-title"><h3>URLs</h3><span id="urlCount"></span></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>URL</th><th>Indicators</th><th>Reputation / VirusTotal report</th></tr></thead>
+            <tbody id="urls"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="card wide">
+        <div class="section-title"><h3>Attachments</h3><span id="attachmentCount"></span></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Filename</th><th>SHA-256</th><th>Risk indicators / reputation</th></tr></thead>
+            <tbody id="attachments"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="card wide">
+        <div class="section-title"><h3>Received chain</h3></div>
+        <div id="received"></div>
+      </article>
+    </section>
+    <section class="card analysis-ip-dashboard hidden" id="analysisIpDashboard">
+      <section class="dashboard-heading"><div><p class="eyebrow">CURRENT EMAIL ONLY</p><h2>IP Reputation Dashboard</h2><p class="muted" id="analysisIpSubtitle">IP reputation and Received-chain details for the email just analyzed.</p></div></section>
+      <section class="dashboard-metrics" aria-label="Current email IP summary">
+        <article class="dashboard-stat card"><span>IPs Found</span><strong id="currentIpTotal">0</strong><small>In this email's Received headers</small></article>
+        <article class="dashboard-stat card"><span>High-risk Signals</span><strong id="currentIpHigh">0</strong><small>Based on returned reputation data</small></article>
+        <article class="dashboard-stat card"><span>Reputation Available</span><strong id="currentIpScored">0</strong><small id="currentIpScoredMeta">Of IPs found in this email</small></article>
+      </section>
+      <div class="dashboard-columns">
+        <div class="dashboard-main-col"><section class="card dashboard-panel"><div class="section-title"><div><h2>Received IP Chain</h2><p class="muted">Only hops extracted from this analyzed email.</p></div></div><div id="currentIpRoute" class="dashboard-live-content"></div></section>
+        <section class="card dashboard-panel"><div class="section-title"><div><h2>AbuseIPDB Score Comparison</h2><p class="muted">Confidence scores returned for IPs in this email only.</p></div></div><div id="currentIpChart" class="dashboard-live-content"></div></section></div>
+        <aside class="dashboard-side-col"><section class="card dashboard-panel"><div class="section-title"><h2>IP Reputation Overview</h2></div><div id="currentIpOverview" class="reputation-legend"></div></section><section class="card dashboard-panel"><div class="section-title"><h2>Analysis Insights</h2></div><ul class="insight-list" id="currentIpInsights"></ul></section></aside>
+      </div>
+      <section class="card dashboard-disclaimer">ⓘ These IP results belong only to the currently displayed analysis. Missing scores mean no usable reputation result was returned, not that an IP is safe.</section>
+    </section>
+    </section><!-- /tab-analyze -->
+    <section class="tab-page hidden" id="tab-history">
+      <section class="card"><div class="section-title"><h2>Analysis History</h2><button class="primary secondary" id="clearHistoryBtn">Clear history</button></div><p class="muted">Saved in this browser only (local storage). Search by sender, subject, source, or risk level.</p><label for="historySearch">Search history</label><input id="historySearch" type="search" placeholder="e.g. suspicious, high risk, sender@example.com"><div id="historyCount" class="muted history-count"></div><div id="historyList"></div></section>
+    </section>
+    <section class="tab-page hidden" id="tab-reports">
+      <section class="card"><h2>Reports</h2><p class="muted">Reports from this browser session's saved analysis history. Open an entry in History to restore it, then use HTML or JSON export.</p><div id="reportsList"></div></section>
+    </section>
+    <section class="tab-page hidden" id="tab-virustotal">
+      <section class="card"><h2>VirusTotal results</h2><p class="muted">VirusTotal responses returned by your analyzer appear in each analysis under URL and attachment reputation. Select a history entry to restore its detailed report.</p><div id="vtHistoryList"></div></section>
+    </section>
+    <section class="tab-page hidden" id="tab-about"><section class="card"><h2>About Email Threat Analyzer</h2><p>Email Threat Analyzer is a local security-learning tool for inspecting suspicious email files, sender authentication, URLs, attachments, and mail routing. It uses the configured reputation providers and static analysis available in your backend.</p><p class="muted">Version 0.5.0 · Local FastAPI backend</p></section></section>
+    <section class="tab-page hidden" id="tab-contact"><section class="card"><h2>Contact Us / Feedback</h2><p>Use this local form to draft feedback. It does not transmit or email anything automatically.</p><label for="contactName">Name</label><input id="contactName" placeholder="Your name"><label for="contactMessage">Message</label><textarea id="contactMessage" rows="5" placeholder="Describe a bug or suggest a feature"></textarea><button class="primary" id="copyFeedbackBtn">Copy feedback</button><p id="contactStatus" class="muted"></p></section></section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
